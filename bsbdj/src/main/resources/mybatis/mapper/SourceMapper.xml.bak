@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace就是刚才我们创建的接口名 -->
+<mapper namespace="com.itlaoqi.bsbdj.mapper.SourceMapper">
+    <!--
+        id="insert" 要与接口方法名保持一致
+
+        //在bsbdjApplication的类上增加下面的注解
+        //扫描mapper包，自动生成mapper对应的实现类
+        @MapperScan("com.itlaoqi.bsbdj.mapper")
+    -->
+    <insert id="insert" parameterType="com.itlaoqi.bsbdj.entity.Source">
+        INSERT INTO t_source(channel_id , response_text , create_time , url , state)
+        VALUES(#{channelId} , #{responseText} , #{createTime} , #{url} , #{state})
+    </insert>
+</mapper>

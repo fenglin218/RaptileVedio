@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itlaoqi.bsbdj.mapper.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.itlaoqi.bsbdj.entity.Comment">
+    <id column="comment_id" jdbcType="BIGINT" property="commentId" />
+    <result column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="passtime" jdbcType="VARCHAR" property="passtime" />
+    <result column="content_id" jdbcType="BIGINT" property="contentId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.itlaoqi.bsbdj.entity.Comment">
+    <result column="comment_text" jdbcType="LONGVARCHAR" property="commentText" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    comment_id, uid, passtime, content_id
+  </sql>
+  <sql id="Blob_Column_List">
+    comment_text
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_comment
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_comment
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.itlaoqi.bsbdj.entity.Comment">
+    insert into t_comment (comment_id, uid, passtime, 
+      content_id, comment_text)
+    values (#{commentId,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT}, #{passtime,jdbcType=VARCHAR}, 
+      #{contentId,jdbcType=BIGINT}, #{commentText,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.itlaoqi.bsbdj.entity.Comment">
+    insert into t_comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="commentId != null">
+        comment_id,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="passtime != null">
+        passtime,
+      </if>
+      <if test="contentId != null">
+        content_id,
+      </if>
+      <if test="commentText != null">
+        comment_text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="commentId != null">
+        #{commentId,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="passtime != null">
+        #{passtime,jdbcType=VARCHAR},
+      </if>
+      <if test="contentId != null">
+        #{contentId,jdbcType=BIGINT},
+      </if>
+      <if test="commentText != null">
+        #{commentText,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itlaoqi.bsbdj.entity.Comment">
+    update t_comment
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="passtime != null">
+        passtime = #{passtime,jdbcType=VARCHAR},
+      </if>
+      <if test="contentId != null">
+        content_id = #{contentId,jdbcType=BIGINT},
+      </if>
+      <if test="commentText != null">
+        comment_text = #{commentText,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.itlaoqi.bsbdj.entity.Comment">
+    update t_comment
+    set uid = #{uid,jdbcType=BIGINT},
+      passtime = #{passtime,jdbcType=VARCHAR},
+      content_id = #{contentId,jdbcType=BIGINT},
+      comment_text = #{commentText,jdbcType=LONGVARCHAR}
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itlaoqi.bsbdj.entity.Comment">
+    update t_comment
+    set uid = #{uid,jdbcType=BIGINT},
+      passtime = #{passtime,jdbcType=VARCHAR},
+      content_id = #{contentId,jdbcType=BIGINT}
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </update>
+  <select id="findByContentId" parameterType="java.lang.Long" resultType="java.util.Map">
+    select c.* , u.nickname , u.header from t_comment c , t_user u where c.uid = u.uid and content_id = #{value}
+  </select>
+</mapper>
